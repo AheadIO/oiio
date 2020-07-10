@@ -327,7 +327,7 @@ py_to_stdvector(std::vector<T>& vals, const py::object& obj)
     }
     // Apparently a str can masquerade as a buffer object, so make sure to
     // exclude that from teh buffer case.
-    if (py::isinstance<py::buffer>(obj) && ! py::isinstance<py::str>(obj)) {
+    if (py::isinstance<py::buffer>(obj) && !py::isinstance<py::str>(obj)) {
         return py_buffer_to_stdvector(vals, obj.cast<py::buffer>());
     }
 
@@ -368,7 +368,7 @@ C_to_tuple<TypeDesc>(cspan<TypeDesc> vals)
     size_t size = vals.size();
     py::tuple result(size);
     for (size_t i = 0; i < size; ++i)
-        result[i] = py::cast<TypeDesc>(vals[i]);
+        result[i] = py::cast(vals[i]);
     return result;
 }
 

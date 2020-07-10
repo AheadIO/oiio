@@ -911,9 +911,12 @@ erase_attribute(int argc, const char* argv[])
         ot.warning(argv[0], "no current image available to modify");
         return 0;
     }
+    string_view command = ot.express(argv[0]);
+    auto options        = ot.extract_options(command);
+    bool allsubimages   = options.get_int("allsubimages", ot.allsubimages);
     string_view pattern = ot.express(argv[1]);
     return apply_spec_mod(*ot.curimg, do_erase_attribute, pattern,
-                          ot.allsubimages);
+                          allsubimages);
 }
 
 
@@ -4618,6 +4621,7 @@ output_file(int /*argc*/, const char* argv[])
     bool supports_displaywindow  = out->supports("displaywindow");
     bool supports_negativeorigin = out->supports("negativeorigin");
     bool supports_tiles = out->supports("tiles") || ot.output_force_tiles;
+    bool procedural     = out->supports("procedural");
     ot.read();
     ImageRecRef saveimg = ot.curimg;
     ImageRecRef ir(ot.curimg);
@@ -4890,7 +4894,7 @@ output_file(int /*argc*/, const char* argv[])
 
         // We wrote to a temporary file, so now atomically move it to the
         // original desired location.
-        if (ok) {
+        if (ok && !procedural) {
             std::string err;
             ok = Filesystem::rename(tmpfilename, filename, err);
             if (!ok)
@@ -5307,8 +5311,8 @@ getargs(int argc, char* argv[])
     ap.arg("--metamerge", &ot.metamerge)
       .help("Always merge metadata of all inputs into output");
     ap.arg("--crash")
-      .action(crash_me)
-      .hidden();
+      .hidden()
+      .action(crash_me);
     ap.separator("Commands that read images:");
     ap.arg("-i %s:FILENAME")
       .help("Input file (options: now=, printinfo=, autocc=, type=, ch=)")
