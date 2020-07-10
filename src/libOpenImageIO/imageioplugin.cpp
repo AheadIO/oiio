@@ -208,11 +208,13 @@ catalog_plugin(const std::string& format_name,
         extern const char* name##_imageio_library_version();
 
 PLUGENTRY(bmp);
+PLUGENTRY_RO(BlackMagicRAW);
 PLUGENTRY(cineon);
 PLUGENTRY(dds);
 PLUGENTRY_RO(dicom);
 PLUGENTRY(dpx);
 PLUGENTRY(ffmpeg);
+PLUGENTRY(r3d);
 PLUGENTRY(field3d);
 PLUGENTRY(fits);
 PLUGENTRY(gif);
@@ -269,6 +271,16 @@ catalog_builtin_plugins()
 
 #if !defined(DISABLE_BMP)
     DECLAREPLUG (bmp);
+#endif
+#ifdef USE_BlackMagicRAW
+#if !defined(DISABLE_BlackMagicRAW)
+    DECLAREPLUG_RO (BlackMagicRAW);
+#endif
+#endif
+#ifdef USE_R3DSDK
+#if !defined(DISABLE_REDSDK)
+    DECLAREPLUG_RO (r3d);
+#endif
 #endif
 #if !defined(DISABLE_CINEON)
     DECLAREPLUG_RO (cineon);

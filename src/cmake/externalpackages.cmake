@@ -273,6 +273,9 @@ checked_find_package (Webp)
 option (USE_R3DSDK "Enable R3DSDK (RED camera) support" OFF)
 checked_find_package (R3DSDK)  # RED camera
 
+option (USE_BlackMagicRAW "Enable BlackMagicRAW support" OFF)
+checked_find_package (BlackMagicRAW) # BlackMagicRAW
+
 set (NUKE_VERSION "7.0" CACHE STRING "Nuke version to target")
 checked_find_package (Nuke)
 
